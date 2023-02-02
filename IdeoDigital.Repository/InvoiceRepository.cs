@@ -61,14 +61,14 @@ namespace IdeoDigital.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<Invoice[]> Get()
+        public async Task<Invoice[]> Get(int PageSize = 20)
         {
             IQueryable<Invoice> query = _context.Invoices
                 .Include(x => x.Supplier)
                 .Include(x => x.Customer)
                 //.Include(x => x.IdNavigation)
                 .Include(x => x.Status)
-                .Take(20);
+                .Take(PageSize);
             return await query.ToArrayAsync();
         }
 
