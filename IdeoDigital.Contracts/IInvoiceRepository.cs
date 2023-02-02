@@ -11,7 +11,7 @@ namespace IdeoDigital.Contracts
     {
         Task<Invoice[]> Get();
         Task<Invoice?> GetById(int id);
-        void Create(Invoice invoice);
+        Task Create(Invoice invoice);
         void Update(Invoice invoice);
         void Delete(int id);
     }

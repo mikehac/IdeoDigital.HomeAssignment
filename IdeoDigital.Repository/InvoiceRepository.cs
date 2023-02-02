@@ -18,9 +18,42 @@ namespace IdeoDigital.Repository
             _context = context;
         }
 
-        public void Create(Invoice invoice)
+        public async Task Create(Invoice invoice)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (invoice.Items != null)
+                {
+                    await _context.Items.AddRangeAsync(invoice.Items);
+                }
+                Supplier? supplier = await _context.Suppliers.FirstOrDefaultAsync(x =>
+                                    invoice.SupplierId != 0 ?
+                                    x.Id == invoice.SupplierId :
+                                    x.Name.ToLower().Equals(invoice.Supplier.Name.ToLower()));
+
+                if (supplier == null)
+                {
+                    _context.Suppliers.Add(invoice.Supplier);
+                }
+                else
+                {
+                    //save the supplierId for using later on invoice aditing
+                }
+                Customer? customer = await _context.Customers.FirstOrDefaultAsync(x =>
+                                    invoice.CustomerId != 0 ? x.Id == invoice.CustomerId :
+                                    x.Name.ToLower().Equals(invoice.Customer.Name.ToLower());
+                if (customer == null)
+                {
+                    _context.Customers.Add(invoice.Customer);
+                }
+
+                _context.Invoices.Add(invoice);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public void Delete(int id)
