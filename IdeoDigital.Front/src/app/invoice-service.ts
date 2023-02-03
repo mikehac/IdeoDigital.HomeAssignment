@@ -17,10 +17,13 @@ export class InvoiceService {
 export interface Invoice {
   id: number,
   customerId: number,
+  customerName: string,
+  supplierName: string,
   date: Date,
   dueDate: Date,
   subTotal: Float32Array,
-  statusId: number
+  statusId: number,
+  invoiceStatus: string
 }
 interface InvoiceResponse {
   invoices: Invoice[]

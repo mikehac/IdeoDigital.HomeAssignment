@@ -8,8 +8,10 @@ namespace IdeoDigital.HomeAssignment.DTOs
         public int Id { get; set; }
 
         public int SupplierId { get; set; }
+        public string SupplierName { get; set; }
 
         public int CustomerId { get; set; }
+        public string CustomerName { get; set; }
 
         public DateTime Date { get; set; }
 
@@ -24,6 +26,7 @@ namespace IdeoDigital.HomeAssignment.DTOs
         public int ItemId { get; set; }
 
         public int StatusId { get; set; }
+        public string InvoiceStatus { get; set; }
 
         public Customer Customers { get; set; }
 

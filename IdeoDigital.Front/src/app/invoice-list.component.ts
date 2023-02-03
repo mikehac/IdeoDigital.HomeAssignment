@@ -8,7 +8,7 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 })
 export class InvoiceListComponent implements OnInit {
   invoices;
-  public displayedColumns = ['id', 'customerId', 'date', 'dueDate', 'subTotal', 'statusId'];
+  public displayedColumns = ['id', 'supplierName','customerName', 'date', 'dueDate', 'subTotal', 'invoiceStatus'];
   public dataSource = new MatTableDataSource<Invoice>();
   constructor(private invoiceService: InvoiceService) { }
 
@@ -20,7 +20,7 @@ export class InvoiceListComponent implements OnInit {
       .subscribe(invoices => {
         //this.invoices = invoices;
         this.dataSource.data = invoices;
-        //console.log(this.dataSource.data);
+        console.log(this.dataSource.data);
       });
   }
 }
