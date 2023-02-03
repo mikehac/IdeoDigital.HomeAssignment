@@ -9,7 +9,7 @@ namespace IdeoDigital.Contracts
 {
     public interface IInvoiceRepository
     {
-        Task<Invoice[]> Get(int PageSize = 20);
+        Task<Invoice[]> Get(int PageSize = 10);
         Task<Invoice?> GetById(int id);
         Task Create(Invoice invoice);
         void Update(Invoice invoice);

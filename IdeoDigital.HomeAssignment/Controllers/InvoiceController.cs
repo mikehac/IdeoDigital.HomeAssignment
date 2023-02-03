@@ -2,6 +2,7 @@
 using IdeoDigital.Contracts;
 using IdeoDigital.Entities;
 using IdeoDigital.HomeAssignment.DTOs;
+using IdeoDigital.HomeAssignment.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,36 +12,33 @@ namespace IdeoDigital.HomeAssignment.Controllers
     [ApiController]
     public class InvoiceController : ControllerBase
     {
-        private readonly IInvoiceRepository _invoiceRepository;
-        private readonly IMapper _mapper;
+        private readonly IInvoiceService _invoiceService;
 
-        public InvoiceController(IInvoiceRepository invoiceRepository,
-            IMapper mapper)
+        public InvoiceController(IInvoiceService invoiceService)
         {
-            _invoiceRepository = invoiceRepository;
-            _mapper = mapper;
+            _invoiceService = invoiceService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var invoices = await _invoiceRepository.Get();
+            var invoices = await _invoiceService.Get();
             if(invoices == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<InvoiceDto[]>(invoices));
+            return Ok(invoices);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var invoice = await _invoiceRepository.GetById(id);
+            var invoice = await _invoiceService.GetById(id);
             if (invoice == null)
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<InvoiceDto>(invoice));
+            return Ok(invoice);
         }
 
         [HttpPost]
@@ -64,7 +62,7 @@ namespace IdeoDigital.HomeAssignment.Controllers
             }
 
             //TODO: the crate method is better to return value of success/failer
-            await _invoiceRepository.Create(_mapper.Map<Invoice>(invoice));
+            await _invoiceService.Create(invoice);
             return Ok();
         }
     }

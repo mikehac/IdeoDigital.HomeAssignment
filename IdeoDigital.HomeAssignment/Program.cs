@@ -16,8 +16,8 @@ namespace IdeoDigital.HomeAssignment
 
             // Add services to the container.
             builder.Services.ConfigureSqlContext(builder.Configuration);
-            builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
-            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            builder.Services.AddDIs();
+            //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddControllers()
                 .AddJsonOptions(x => 
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

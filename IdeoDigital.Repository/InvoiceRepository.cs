@@ -16,6 +16,8 @@ namespace IdeoDigital.Repository
         public InvoiceRepository(IdeoDigitalContext context)
         {
             _context = context;
+            _context.ChangeTracker.LazyLoadingEnabled = false;
+            _context.ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
         public async Task Create(Invoice invoice)
@@ -61,7 +63,7 @@ namespace IdeoDigital.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<Invoice[]> Get(int PageSize = 20)
+        public async Task<Invoice[]> Get(int PageSize = 10)
         {
             IQueryable<Invoice> query = _context.Invoices
                 .Include(x => x.Supplier)
