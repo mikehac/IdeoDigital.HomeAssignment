@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject , OnInit } from '@angular/core';
 import { InvoiceService, Invoice } from './invoice-service';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NewInvoiceDialogeComponent } from './new-invoice-dialoge/new-invoice-dialoge.component';
+
 @Component({
   selector: 'app-invoice-list',
   templateUrl: './invoice-list.component.html',
@@ -8,9 +11,10 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 })
 export class InvoiceListComponent implements OnInit {
   invoices;
-  public displayedColumns = ['id', 'supplierName','customerName', 'date', 'dueDate', 'subTotal', 'invoiceStatus'];
+  public displayedColumns = ['id', 'supplierName', 'customerName', 'date', 'dueDate', 'subTotal', 'invoiceStatus'];
+  public clickedRows = new Set<Invoice>();
   public dataSource = new MatTableDataSource<Invoice>();
-  constructor(private invoiceService: InvoiceService) { }
+  constructor(public dialog: MatDialog, private invoiceService: InvoiceService) { }
 
   ngOnInit(): void {
     this.getInvoices();
@@ -22,5 +26,16 @@ export class InvoiceListComponent implements OnInit {
         this.dataSource.data = invoices;
         console.log(this.dataSource.data);
       });
+  }
+  public onRowClick(row) {
+    //This is for editing
+    console.log(row.id);
+  }
+  public raisePopUpInvoice() {
+    this.dialog.open(NewInvoiceDialogeComponent, {
+      data: {
+        action: 'createInvoice',
+      },
+    });
   }
 }

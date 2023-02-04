@@ -13,6 +13,13 @@ export class InvoiceService {
     let url = this.baseUrl + controller;
     return this.http.get<Invoice[]>(url);
   }
+  post(controller, newInvoice: NewInvoiceResponse) {
+    let url = this.baseUrl + controller;
+    return this.http.post(url, newInvoice)
+      .pipe(map(response => {
+        return response;
+      }));
+  }
 }
 export interface Invoice {
   id: number,
@@ -25,6 +32,19 @@ export interface Invoice {
   statusId: number,
   invoiceStatus: string
 }
-interface InvoiceResponse {
-  invoices: Invoice[]
+export interface NewInvoiceResponse {
+  customerName: string,
+  customerAddress: string,
+  supplierName: string,
+  supplierAddress: string,
+  date: Date,
+  dueDate: Date,
+  subTotal: number,
+  // items: Item[],
+  invoiceStatus: string
+}
+interface Item{
+  description: string,
+  quentity: number,
+  rate: number  
 }
