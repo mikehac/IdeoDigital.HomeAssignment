@@ -1,7 +1,4 @@
-﻿using IdeoDigital.Entities;
-using Microsoft.EntityFrameworkCore;
-
-namespace IdeoDigital.HomeAssignment.DTOs
+﻿namespace IdeoDigital.HomeAssignment.DTOs
 {
     public class InvoiceDto
     {
@@ -28,14 +25,12 @@ namespace IdeoDigital.HomeAssignment.DTOs
         public int StatusId { get; set; }
         public string InvoiceStatus { get; set; }
 
-        public Customer Customers { get; set; }
+        public CustomerDto Customers { get; set; }
 
-        public Invoice Invoices { get; set; }
+        public ICollection<ItemDto> Items { get; set; }
 
-        public ICollection<Item> Items { get; set; }
+        public StatusDto Statuses { get; set; }
 
-        public Status Statuses { get; set; }
-
-        public Supplier Suppliers { get; set; }
+        public SupplierDto Suppliers { get; set; }
     }
 }

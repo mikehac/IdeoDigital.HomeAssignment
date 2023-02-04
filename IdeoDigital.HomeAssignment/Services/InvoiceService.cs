@@ -22,6 +22,14 @@ namespace IdeoDigital.HomeAssignment.Services
             await _invoiceRepository.Create(_mapper.Map<Invoice>(invoice));
         }
 
+        public async Task<bool> Delete(int id)
+        {
+            var items = await _invoiceRepository.ItemsById(id);
+
+            await _invoiceRepository.Delete(id);
+            return true;
+        }
+
         public async Task<InvoiceDto[]> Get(int PageSize = 10)
         {
             //TODO: calculate after discount and tax for Total

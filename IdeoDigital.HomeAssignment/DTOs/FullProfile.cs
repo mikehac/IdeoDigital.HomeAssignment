@@ -16,6 +16,17 @@ namespace IdeoDigital.HomeAssignment.DTOs
                 .ForMember(c => c.Items, o => o.MapFrom(x => x.Items))
                 .ReverseMap();
 
+            CreateMap<Customer, CustomerDto>()
+                .ReverseMap();
+
+            CreateMap<Supplier, SupplierDto>()
+                .ReverseMap();
+
+            CreateMap<Item, ItemDto>()
+                .ReverseMap();
+
+            CreateMap<Status, StatusDto>()
+                .ReverseMap();
         }
     }
 }

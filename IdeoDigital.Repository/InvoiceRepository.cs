@@ -54,13 +54,27 @@ namespace IdeoDigital.Repository
             }
             catch (Exception ex)
             {
-
+                throw;
             }
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var items = _context.Items.Where(x => x.InvoiceId == id);
+                _context.Items.RemoveRange(items);
+                var invoice = _context.Invoices.FirstOrDefault(x => x.Id == id);
+                if (invoice != null)
+                {
+                    _context.Invoices.Remove(invoice);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task<Invoice[]> Get(int PageSize = 10)
@@ -84,6 +98,11 @@ namespace IdeoDigital.Repository
                 .Include(x => x.Status)
                 .FirstOrDefaultAsync(x => x.Id == id);
             return invoice;
+        }
+
+        public async Task<Item[]> ItemsById(int id)
+        {
+            return await _context.Items.Where(x => x.InvoiceId == id).ToArrayAsync();
         }
 
         public void Update(Invoice invoice)

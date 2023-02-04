@@ -13,6 +13,7 @@ namespace IdeoDigital.Contracts
         Task<Invoice?> GetById(int id);
         Task Create(Invoice invoice);
         void Update(Invoice invoice);
-        void Delete(int id);
+        Task Delete(int id);
+        Task<Item[]> ItemsById(int id);
     }
 }

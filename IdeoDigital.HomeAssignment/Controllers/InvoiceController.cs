@@ -22,23 +22,39 @@ namespace IdeoDigital.HomeAssignment.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var invoices = await _invoiceService.Get();
-            if(invoices == null)
+            try
             {
-                return NotFound();
+                var invoices = await _invoiceService.Get();
+                if (invoices == null)
+                {
+                    return NotFound("There are no invoices yet");
+                }
+                return Ok(invoices);
             }
-            return Ok(invoices);
+            catch (Exception ex)
+            {
+                //TODO:Logging the acceptions
+                return StatusCode(StatusCodes.Status500InternalServerError, "The requst failed");
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var invoice = await _invoiceService.GetById(id);
-            if (invoice == null)
+            try
             {
-                return NotFound();
+                var invoice = await _invoiceService.GetById(id);
+                if (invoice == null)
+                {
+                    return NotFound($"Invoice with id {id} could not be found");
+                }
+                return Ok(invoice);
             }
-            return Ok(invoice);
+            catch (Exception ex)
+            {
+                //TODO:Logging the acceptions
+                return StatusCode(StatusCodes.Status500InternalServerError, "The requst failed");
+            }
         }
 
         [HttpPost]
@@ -61,9 +77,36 @@ namespace IdeoDigital.HomeAssignment.Controllers
                 return BadRequest("Invoice must include supplier's details");
             }
 
-            //TODO: the crate method is better to return value of success/failer
-            await _invoiceService.Create(invoice);
-            return Ok();
+            try
+            {
+                //TODO: the crate method is better to return value of success/failer
+                await _invoiceService.Create(invoice);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                //TODO:Logging the acceptions
+                return StatusCode(StatusCodes.Status500InternalServerError, "The requst failed");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var invoice = await _invoiceService.GetById(id);
+                if (invoice == null)
+                    return NotFound($"Invoice with id {id} could not be found");
+                if(await _invoiceService.Delete(id))
+                    return Ok();
+            }
+            catch (Exception ex)
+            {
+                //TODO:Logging the acceptions
+                return StatusCode(StatusCodes.Status500InternalServerError, "The requst failed");
+            }
+            return BadRequest("Failed to delete the invoice");
         }
     }
 }
