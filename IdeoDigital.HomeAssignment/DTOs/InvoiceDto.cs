@@ -20,8 +20,6 @@
 
         public double? Discount { get; set; }
 
-        public int ItemId { get; set; }
-
         public int StatusId { get; set; }
         public string InvoiceStatus { get; set; }
 

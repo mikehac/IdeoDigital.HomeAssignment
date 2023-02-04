@@ -12,6 +12,6 @@
 
         public decimal Rate { get; set; }
 
-        public virtual InvoiceDto Invoice { get; set; } = null!;
+        //public virtual InvoiceDto Invoice { get; set; } = null!;
     }
 }
