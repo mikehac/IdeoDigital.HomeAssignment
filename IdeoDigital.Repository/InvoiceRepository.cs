@@ -20,7 +20,7 @@ namespace IdeoDigital.Repository
             _context.ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
-        public async Task Create(Invoice invoice)
+        public async Task<bool> Create(Invoice invoice)
         {
             try
             {
@@ -50,7 +50,9 @@ namespace IdeoDigital.Repository
                 }
 
                 _context.Invoices.Add(invoice);
-                await _context.SaveChangesAsync();
+                if (await _context.SaveChangesAsync() > 0)
+                    return true;
+                return false;
             }
             catch (Exception ex)
             {
@@ -77,7 +79,7 @@ namespace IdeoDigital.Repository
             }
         }
 
-        public async Task<Invoice[]> Get(int PageSize = 10)
+        public async Task<Invoice[]> Get(int PageSize = 20)
         {
             IQueryable<Invoice> query = _context.Invoices
                 .Include(x => x.Supplier)

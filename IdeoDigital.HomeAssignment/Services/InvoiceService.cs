@@ -17,9 +17,9 @@ namespace IdeoDigital.HomeAssignment.Services
             _mapper = mapper;
         }
 
-        public async Task Create(InvoiceDto invoice)
+        public async Task<bool> Create(InvoiceDto invoice)
         {
-            await _invoiceRepository.Create(_mapper.Map<Invoice>(invoice));
+            return await _invoiceRepository.Create(_mapper.Map<Invoice>(invoice));
         }
 
         public async Task<bool> Delete(int id)
@@ -30,7 +30,7 @@ namespace IdeoDigital.HomeAssignment.Services
             return true;
         }
 
-        public async Task<InvoiceDto[]> Get(int PageSize = 10)
+        public async Task<InvoiceDto[]> Get(int PageSize = 20)
         {
             //TODO: calculate after discount and tax for Total
             return _mapper.Map<InvoiceDto[]>(await _invoiceRepository.Get(PageSize));
