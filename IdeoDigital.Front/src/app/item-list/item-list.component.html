@@ -1,0 +1,34 @@
+<article class="table-header">
+    <button class="button-add-row" mat-button (click)="addRow()">Add Row</button>
+  </article>
+<table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element">
+        <input matInput type="text" (focusout)="onFocusOut()" [(ngModel)]="element.description" />
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="quentity">
+      <th mat-header-cell *matHeaderCellDef> Quentity </th>
+      <td mat-cell *matCellDef="let element">
+        <input matInput type="text" (focusout)="onFocusOut()" [(ngModel)]="element.quentity" >
+         </td>
+    </ng-container>
+
+    <ng-container matColumnDef="rate">
+        <th mat-header-cell *matHeaderCellDef> Rate </th>
+        <td mat-cell *matCellDef="let element">
+            <input matInput type="text" (focusout)="onFocusOut()" [(ngModel)]="element.rate" ></td>
+      </ng-container>
+    
+    <ng-container matColumnDef="isEdit">
+        <th mat-header-cell *matHeaderCellDef>Delete</th>
+        <td mat-cell *matCellDef="let element">
+            <button name="deleteRow" type="button" class="button-remove" (click)="removeRow(element)">{{element.isEdit}</button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

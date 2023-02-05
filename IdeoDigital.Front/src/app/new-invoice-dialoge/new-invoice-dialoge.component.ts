@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Invoice, InvoiceService } from '../invoice-service'
+import { ItemListComponent } from '../item-list/item-list.component'
 
 @Component({
   selector: 'app-new-invoice-dialoge',
@@ -10,6 +11,7 @@ import { Invoice, InvoiceService } from '../invoice-service'
 })
 export class NewInvoiceDialogeComponent implements OnInit {
   form: FormGroup;
+  items: any[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -37,7 +39,8 @@ export class NewInvoiceDialogeComponent implements OnInit {
       date: newInvoice.date,
       dueDate: newInvoice.dueDate,
       subTotal: 0.00,
-      invoiceStatus: newInvoice.invoiceStatus
+      invoiceStatus: 'newInvoice.invoiceStatus',
+      items: this.items
     };
     this.invoiceService.post('invoice', invoiceToSave)
       .subscribe(response => {
@@ -45,7 +48,10 @@ export class NewInvoiceDialogeComponent implements OnInit {
       });
     console.log(invoiceToSave);
   }
-
+  onItemAdded(items) {
+    console.log(items);
+    this.items = items;
+  }
 }
 export interface DialogData {
   action: string

@@ -41,20 +41,7 @@
         </li>
         <li>
             <label>Items</label>
-            <ul>
-                <li>
-                    <label>Description</label>
-                    <input type="text" name="description" />
-                </li>
-                <li>
-                    <label>Quentity</label>
-                    <input type="number" name="Quentity"/>
-                </li>
-                <li>
-                    <label>Rate</label>
-                    <input type="number" name="rate" />
-                </li>
-            </ul>
+            <app-item-list (addingItems)="onItemAdded($event)"></app-item-list>
         </li>
         <li>
             <label>Status</label>

@@ -11,11 +11,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { AppMaterialModule } from "./app.material-module";
 import { NewInvoiceDialogeComponent } from './new-invoice-dialoge/new-invoice-dialoge.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import { ItemListComponent } from './item-list/item-list.component';
+import { FormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
     InvoiceListComponent,
-    NewInvoiceDialogeComponent
+    NewInvoiceDialogeComponent,
+    ItemListComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +27,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    AppMaterialModule
+    AppMaterialModule,
+    FormsModule
   ],
   exports: [
     MatDialogModule
