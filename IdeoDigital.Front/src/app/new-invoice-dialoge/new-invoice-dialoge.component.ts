@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Invoice, InvoiceService } from '../invoice-service'
 import { ItemListComponent } from '../item-list/item-list.component'
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-new-invoice-dialoge',
@@ -15,7 +16,8 @@ export class NewInvoiceDialogeComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private invoiceService: InvoiceService,    
+    private invoiceService: InvoiceService,
+    private dialogRef: MatDialogRef<NewInvoiceDialogeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   ngOnInit(): void {
@@ -45,8 +47,9 @@ export class NewInvoiceDialogeComponent implements OnInit {
     this.invoiceService.post('invoice', invoiceToSave)
       .subscribe(response => {
         console.log(response);
+        //close the popup
+        this.dialogRef.close();
       });
-    console.log(invoiceToSave);
   }
   onItemAdded(items) {
     console.log(items);
