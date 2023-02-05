@@ -2,6 +2,7 @@
 using IdeoDigital.Contracts;
 using IdeoDigital.Entities;
 using IdeoDigital.HomeAssignment.DTOs;
+using IdeoDigital.HomeAssignment.DTOs.Requests;
 using IdeoDigital.HomeAssignment.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace IdeoDigital.HomeAssignment.Controllers
     public class InvoiceController : ControllerBase
     {
         private readonly IInvoiceService _invoiceService;
+        private readonly IMapper _mapper;
 
-        public InvoiceController(IInvoiceService invoiceService)
+        public InvoiceController(IInvoiceService invoiceService, IMapper mapper)
         {
             _invoiceService = invoiceService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -58,21 +61,21 @@ namespace IdeoDigital.HomeAssignment.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(InvoiceDto invoice)
+        public async Task<IActionResult> Create(CreateInvoiceRequest invoiceRequest)
         {
-            if(invoice == null)
+            if (invoiceRequest == null)
             {
                 return BadRequest("Invoice can not be null");
             }
-            if (invoice.Items == null || invoice.Items.Count == 0)
+            if (invoiceRequest.Items == null || invoiceRequest.Items.Count == 0)
             {
                 return BadRequest("Invoice must include at least one item");
             }
-            if (invoice.Customers == null && invoice.CustomerId == 0)
+            if (string.IsNullOrEmpty(invoiceRequest.CustomerName))
             {
                 return BadRequest("Invoice must include customer's details");
             }
-            if (invoice.Suppliers == null && invoice.SupplierId == 0)
+            if (string.IsNullOrEmpty(invoiceRequest.SupplierName))
             {
                 return BadRequest("Invoice must include supplier's details");
             }
@@ -80,14 +83,16 @@ namespace IdeoDigital.HomeAssignment.Controllers
             try
             {
                 //TODO: the crate method is better to return value of success/failer
-                await _invoiceService.Create(invoice);
-                return Ok();
+                InvoiceDto invoice = _mapper.Map<InvoiceDto>(invoiceRequest);
+                if (await _invoiceService.Create(invoice))
+                    return Created("/api/Invoice", invoice);
             }
             catch (Exception ex)
             {
                 //TODO:Logging the acceptions
                 return StatusCode(StatusCodes.Status500InternalServerError, "The requst failed");
             }
+            return BadRequest();
         }
 
         [HttpDelete("{id}")]

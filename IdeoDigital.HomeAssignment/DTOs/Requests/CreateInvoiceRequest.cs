@@ -1,14 +1,9 @@
-﻿namespace IdeoDigital.HomeAssignment.DTOs
+﻿namespace IdeoDigital.HomeAssignment.DTOs.Requests
 {
-    public class InvoiceDto
+    public class CreateInvoiceRequest
     {
-        public int Id { get; set; }
-
-        public int SupplierId { get; set; }
         public string SupplierName { get; set; }
         public string SupplierAddress { get; set; }
-
-        public int CustomerId { get; set; }
         public string CustomerName { get; set; }
         public string CustomerAddress { get; set; }
 
@@ -24,13 +19,7 @@
 
         public int StatusId { get; set; }
         public string InvoiceStatus { get; set; }
-
-        public CustomerDto Customers { get; set; }
-
         public ICollection<ItemDto> Items { get; set; }
 
-        public StatusDto Statuses { get; set; }
-
-        public SupplierDto Suppliers { get; set; }
     }
 }
