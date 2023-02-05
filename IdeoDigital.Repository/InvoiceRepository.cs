@@ -24,6 +24,8 @@ namespace IdeoDigital.Repository
         {
             try
             {
+                int supplierId;
+                int customerId;
                 if (invoice.Items != null)
                 {
                     await _context.Items.AddRangeAsync(invoice.Items);
@@ -36,19 +38,29 @@ namespace IdeoDigital.Repository
                 if (supplier == null)
                 {
                     _context.Suppliers.Add(invoice.Supplier);
+                    await _context.SaveChangesAsync();
+                    supplierId = invoice.Supplier.Id;
                 }
                 else
                 {
-                    //save the supplierId for using later on invoice aditing
+                    supplierId = supplier.Id;
                 }
+                
                 Customer? customer = await _context.Customers.FirstOrDefaultAsync(x =>
                                     invoice.CustomerId != 0 ? x.Id == invoice.CustomerId :
                                     x.Name.ToLower().Equals(invoice.Customer.Name.ToLower()));
                 if (customer == null)
                 {
                     _context.Customers.Add(invoice.Customer);
+                    await _context.SaveChangesAsync();
+                    customerId = invoice.Customer.Id;
                 }
-
+                else
+                {
+                    customerId = customer.Id;
+                }
+                invoice.SupplierId = supplierId;
+                invoice.CustomerId = customerId;
                 _context.Invoices.Add(invoice);
                 if (await _context.SaveChangesAsync() > 0)
                     return true;
@@ -107,9 +119,86 @@ namespace IdeoDigital.Repository
             return await _context.Items.Where(x => x.InvoiceId == id).ToArrayAsync();
         }
 
-        public void Update(Invoice invoice)
+        public async Task Update(Invoice invoice)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Invoice? oldInvoice = _context.Invoices.FirstOrDefault(x => x.Id == invoice.Id);
+                if (oldInvoice == null)
+                {
+                    return;
+                }
+
+                List<Item> oldItems = _context.Items.Where(x => x.InvoiceId == invoice.Id).ToList();
+                if(oldItems != null) 
+                {
+                    return;
+                }
+                
+                _context.Items.RemoveRange(oldItems);
+                await _context.SaveChangesAsync();
+                await _context.Items.AddRangeAsync(invoice.Items);
+                await _context.SaveChangesAsync();
+
+                var supplier = _context.Suppliers.FirstOrDefault(x => 
+                                                            invoice.Supplier.Id != 0 ? 
+                                                                    x.Id == invoice.Supplier.Id : 
+                                                                    x.Name.ToLower().Equals(invoice.Supplier.Name.ToLower()));
+                if (supplier != null)
+                {
+                    //meaning the supplier was changed, replace the old supplierId with the new one
+                    _context.Suppliers.Add(invoice.Supplier);
+                    await _context.SaveChangesAsync();
+                    invoice.SupplierId = invoice.Supplier.Id;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    supplier.Name = invoice.Supplier.Name;
+                    supplier.Address = invoice.Supplier.Address;
+                    await _context.SaveChangesAsync();
+                }
+
+                var customer = _context.Customers.FirstOrDefault(x =>
+                                                            invoice.Customer.Id != 0 ?
+                                                                x.Id == invoice.Customer.Id :
+                                                                x.Name.ToLower().Equals(invoice.Customer.Name.ToLower()));
+                if (customer != null)
+                {
+                    //meaning the customer was changed, replace the old customerId with the new one
+                    _context.Customers.Add(invoice.Customer);
+                    await _context.SaveChangesAsync();
+                    invoice.CustomerId = invoice.Customer.Id;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    customer.Name = invoice.Customer.Name;
+                    customer.Address = invoice.Customer.Address;
+                    customer.ShippingAddress = invoice.Customer.ShippingAddress;
+                    await _context.SaveChangesAsync();
+                }
+
+                var oldinvoice = _context.Invoices.FirstOrDefault(x => x.Id == invoice.Id);
+                if(oldinvoice != null)
+                {
+                    oldinvoice.CustomerId = invoice.CustomerId;
+                    oldinvoice.SupplierId = invoice.SupplierId;
+                    oldinvoice.StatusId = invoice.StatusId;
+                    oldinvoice.Date = invoice.Date;
+                    oldinvoice.DueDate = invoice.DueDate;
+                    oldinvoice.Tax = invoice.Tax;
+                    oldinvoice.Discount = invoice.Discount;
+                    decimal subTotal = invoice.Items.Sum(x => x.Rate * x.Quentity);
+                    oldinvoice.SubTotal = subTotal;
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }
