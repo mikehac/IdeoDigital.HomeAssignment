@@ -41,7 +41,7 @@
         </li>
         <li>
             <label>Items</label>
-            <app-item-list (addingItems)="onItemAdded($event)"></app-item-list>
+            <app-item-list [Items]="items" (addingItems)="onItemAdded($event)"></app-item-list>
         </li>
         <li>
             <label>Status</label>

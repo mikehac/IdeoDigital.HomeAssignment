@@ -30,6 +30,12 @@ export class InvoiceListComponent implements OnInit {
   public onRowClick(row) {
     //This is for editing
     console.log(row.id);
+    this.dialog.open(NewInvoiceDialogeComponent, {
+      data: {
+        action: 'invoiceDetails',
+        id: row.id
+      },
+    });
   }
   public raisePopUpInvoice() {
     this.dialog.open(NewInvoiceDialogeComponent, {

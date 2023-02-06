@@ -62,6 +62,13 @@ table {
     text-align: left;
     max-width: 300px;
   }
+  table tr{
+    cursor: pointer;
+  }
+  /* table tr:nth-child(odd){
+    background-color: #cbcbcb;
+    color: #fff;
+  } */
   .mat-mdc-row .mat-mdc-cell {
     border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;

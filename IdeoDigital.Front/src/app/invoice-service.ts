@@ -13,6 +13,10 @@ export class InvoiceService {
     let url = this.baseUrl + controller;
     return this.http.get<Invoice[]>(url);
   }
+  getById(controller, id) {
+    let url = this.baseUrl + controller + '/' + id;
+    return this.http.get<Invoice>(url);
+  }
   post(controller, newInvoice: NewInvoiceResponse) {
     let url = this.baseUrl + controller;
     return this.http.post(url, newInvoice)

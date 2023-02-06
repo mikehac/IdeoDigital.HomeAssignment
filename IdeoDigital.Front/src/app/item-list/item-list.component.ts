@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
@@ -7,18 +7,29 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
+  @Input() Items: Item[];
   @Output() addingItems = new EventEmitter<Item[]>();
   public displayedColumns = ['description', 'quentity', 'rate'];
   public dataSource = new MatTableDataSource<Item>();
   constructor() { }
 
   ngOnInit(): void {
-    this.dataSource.data.push({
-      description: '',
-      quentity: 0,
-      rate: 0,
-      isEdit: true
-    });
+    if (this.Items != null) {
+      this.dataSource.data = this.Items;
+    }
+    else {
+      this.dataSource.data.push({
+        description: '',
+        quentity: 0,
+        rate: 0,
+        isEdit: true
+      });
+    }
+  }
+  ngDoCheck(): void{
+    if (this.Items != null) {
+      this.dataSource.data = this.Items;
+    }
   }
   addRow() {
     const newRow = {
