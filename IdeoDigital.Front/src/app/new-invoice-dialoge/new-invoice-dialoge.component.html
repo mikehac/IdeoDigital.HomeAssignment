@@ -40,12 +40,19 @@
             <input type="date" name="dueDate" formControlName="dueDate">
         </li>
         <li>
+            <label>Status</label>
+            <mat-form-field>
+                <mat-select [(value)]="defaultSelected">
+                    <mat-option value="1">Payed</mat-option>
+                    <mat-option value="2">Partially Payed</mat-option>
+                    <mat-option value="3">Not Payed</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </li>
+        <li>
             <label>Items</label>
             <app-item-list [Items]="items" (addingItems)="onItemAdded($event)"></app-item-list>
         </li>
-        <li>
-            <label>Status</label>
-        </li>
     </ul>
-  <button type="submit" >Save</button>
+  <button type="submit" >{{buttonText}}</button>
 </form>

@@ -14,6 +14,13 @@ import { formatDate } from '@angular/common'
 export class NewInvoiceDialogeComponent implements OnInit {
   form: FormGroup;
   items: Item[];
+  defaultSelected = "3";
+  buttonText: string = 'Save';
+  statuses: Status[] = [
+    { value: 1, text: 'Payed' },
+    { value: 2, text: 'Partially Payed' },
+    { value: 3, text: 'Not Payed' }
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,10 +35,13 @@ export class NewInvoiceDialogeComponent implements OnInit {
         date: this.formBuilder.control(''),
         dueDate: this.formBuilder.control('')
       });
-     }
+      this.form.controls['date'].setValue(formatDate(new Date(), 'yyyy-MM-dd', 'en'));
+      this.form.controls['dueDate'].setValue(formatDate(new Date(), 'yyyy-MM-dd', 'en'));
+  }
 
   ngOnInit(): void {
     if (this.data.action === 'invoiceDetails') {
+      this.buttonText = 'Update';
       this.invoiceService.getById('invoice', this.data.id)
         .subscribe(response => {
           this.loadInvoiceDetails(response);
@@ -51,7 +61,9 @@ export class NewInvoiceDialogeComponent implements OnInit {
   
   public onSubmit(newInvoice) {
     console.log(newInvoice);
+    let currentInvoice = this.statuses?.find(x => x.value == parseInt(this.defaultSelected))?.text ?? 'Not Payed';
     var invoiceToSave = {
+      id: 0,
       customerName: newInvoice.customerName,
       customerAddress: newInvoice.customerAddress,
       supplierName: newInvoice.supplierName,
@@ -59,14 +71,25 @@ export class NewInvoiceDialogeComponent implements OnInit {
       date: newInvoice.date,
       dueDate: newInvoice.dueDate,
       subTotal: 0.00,
-      invoiceStatus: 'newInvoice.invoiceStatus',
-      items: this.items
+      invoiceStatus: currentInvoice,
+      items: this.items,
+      statusId: parseInt(this.defaultSelected)
     };
-    this.invoiceService.post('invoice', invoiceToSave)
+    if (this.data.action === 'invoiceDetails') {
+      invoiceToSave.id = this.data.id;
+      this.invoiceService.put('invoice', invoiceToSave)
       .subscribe(response => {
         console.log(response);
         this.dialogRef.close();
       });
+    }
+    else {
+      this.invoiceService.post('invoice', invoiceToSave)
+      .subscribe(response => {
+        console.log(response);
+        this.dialogRef.close();
+      });
+    }
   }
   onItemAdded(items) {
     console.log(items);
@@ -76,4 +99,9 @@ export class NewInvoiceDialogeComponent implements OnInit {
 export interface DialogData {
   action: string,
   id: number
+}
+
+interface Status {
+  value: number,
+  text: string
 }

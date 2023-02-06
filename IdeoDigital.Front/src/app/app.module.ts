@@ -13,6 +13,7 @@ import { NewInvoiceDialogeComponent } from './new-invoice-dialoge/new-invoice-di
 import {MatDialogModule} from '@angular/material/dialog';
 import { ItemListComponent } from './item-list/item-list.component';
 import { FormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { FormsModule } from '@angular/forms';
     ItemListComponent
   ],
   imports: [
+    MatSelectModule,
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
