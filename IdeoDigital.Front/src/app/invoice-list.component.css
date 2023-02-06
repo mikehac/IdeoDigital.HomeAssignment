@@ -62,13 +62,25 @@ table {
     text-align: left;
     max-width: 300px;
   }
-  table tr{
+  table th{
+    background-color: #54585D;
+    color: #ffffff;
+    font-size: 13px;
+    border: 1px solid #54585d;
+  }
+  table tr td{
     cursor: pointer;
   }
-  /* table tr:nth-child(odd){
-    background-color: #cbcbcb;
-    color: #fff;
-  } */
+  tbody td{
+    padding: 30px;
+  }
+  table tr:nth-child(even) td{
+    background-color: #f2f2f2;
+    /* color: #fff; */
+  }
+  tr:hover {
+    background-color: #ddd;
+  }
   .mat-mdc-row .mat-mdc-cell {
     border-bottom: 1px solid transparent;
     border-top: 1px solid transparent;
@@ -80,4 +92,15 @@ table {
   
   .demo-row-is-clicked {
     font-weight: bold;
+  }
+  button{
+    background-color: #f2f2f2;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-bottom: 5px;
+    cursor: pointer;
   }

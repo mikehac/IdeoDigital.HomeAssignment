@@ -14,17 +14,12 @@ export class ItemListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    if (this.Items != null) {
-      this.dataSource.data = this.Items;
-    }
-    else {
       this.dataSource.data.push({
         description: '',
         quentity: 0,
         rate: 0,
         isEdit: true
-      });
-    }
+      });    
   }
   ngDoCheck(): void{
     if (this.Items != null) {
