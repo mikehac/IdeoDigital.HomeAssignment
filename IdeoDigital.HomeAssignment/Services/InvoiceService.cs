@@ -19,10 +19,16 @@ namespace IdeoDigital.HomeAssignment.Services
 
         public async Task<bool> Create(InvoiceDto invoice)
         {
+            Invoice invoiceToSave = UpdateSubTotal(invoice);
+            return await _invoiceRepository.Create(invoiceToSave);
+        }
+
+        private Invoice UpdateSubTotal(InvoiceDto invoice)
+        {
             decimal subTotal = invoice.Items.Sum(x => x.Rate * x.Quentity);
             Invoice invoiceToSave = _mapper.Map<Invoice>(invoice);
             invoiceToSave.SubTotal = subTotal;
-            return await _invoiceRepository.Create(invoiceToSave);
+            return invoiceToSave;
         }
 
         public async Task<bool> Delete(int id)
@@ -42,6 +48,12 @@ namespace IdeoDigital.HomeAssignment.Services
         public async Task<InvoiceDto> GetById(int id)
         {
             return _mapper.Map<InvoiceDto>(await _invoiceRepository.GetById(id));
+        }
+
+        public async Task<bool> Update(InvoiceDto invoice)
+        {
+            Invoice invoiceToSave = UpdateSubTotal(invoice);
+            return await _invoiceRepository.Update(invoiceToSave);
         }
     }
 }

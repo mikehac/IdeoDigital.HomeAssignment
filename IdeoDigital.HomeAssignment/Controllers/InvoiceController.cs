@@ -22,6 +22,27 @@ namespace IdeoDigital.HomeAssignment.Controllers
             _mapper = mapper;
         }
 
+        private IActionResult ValidateInvoice(CreateInvoiceRequest invoiceRequest)
+        {
+            if (invoiceRequest == null)
+            {
+                return BadRequest("Invoice can not be null");
+            }
+            if (invoiceRequest.Items == null || invoiceRequest.Items.Count == 0)
+            {
+                return BadRequest("Invoice must include at least one item");
+            }
+            if (string.IsNullOrEmpty(invoiceRequest.CustomerName))
+            {
+                return BadRequest("Invoice must include customer's details");
+            }
+            if (string.IsNullOrEmpty(invoiceRequest.SupplierName))
+            {
+                return BadRequest("Invoice must include supplier's details");
+            }
+
+            return Ok();
+        }
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -63,26 +84,12 @@ namespace IdeoDigital.HomeAssignment.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateInvoiceRequest invoiceRequest)
         {
-            if (invoiceRequest == null)
-            {
-                return BadRequest("Invoice can not be null");
-            }
-            if (invoiceRequest.Items == null || invoiceRequest.Items.Count == 0)
-            {
-                return BadRequest("Invoice must include at least one item");
-            }
-            if (string.IsNullOrEmpty(invoiceRequest.CustomerName))
-            {
-                return BadRequest("Invoice must include customer's details");
-            }
-            if (string.IsNullOrEmpty(invoiceRequest.SupplierName))
-            {
-                return BadRequest("Invoice must include supplier's details");
-            }
-
             try
             {
-                //TODO: the crate method is better to return value of success/failer
+                var result = ValidateInvoice(invoiceRequest);
+                if (result is BadRequestObjectResult)
+                    return result;
+
                 InvoiceDto invoice = _mapper.Map<InvoiceDto>(invoiceRequest);
                 if (await _invoiceService.Create(invoice))
                     return Created("/api/Invoice", invoice);
@@ -112,6 +119,26 @@ namespace IdeoDigital.HomeAssignment.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "The requst failed");
             }
             return BadRequest("Failed to delete the invoice");
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(CreateInvoiceRequest invoiceRequest)
+        {
+            try
+            {
+                var result = ValidateInvoice(invoiceRequest);
+                if (result is BadRequestObjectResult)
+                    return result;
+                InvoiceDto invoice = _mapper.Map<InvoiceDto>(invoiceRequest);
+                if (await _invoiceService.Update(invoice))
+                    return StatusCode(StatusCodes.Status204NoContent, "The invice was successfully updated");
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return BadRequest();
         }
     }
 }

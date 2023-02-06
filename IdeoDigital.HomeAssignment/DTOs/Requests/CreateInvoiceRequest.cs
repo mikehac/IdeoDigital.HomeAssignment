@@ -2,6 +2,7 @@
 {
     public class CreateInvoiceRequest
     {
+        public int? Id { get; set; }
         public string SupplierName { get; set; }
         public string SupplierAddress { get; set; }
         public string CustomerName { get; set; }

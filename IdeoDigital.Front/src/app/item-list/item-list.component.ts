@@ -14,7 +14,8 @@ export class ItemListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-      this.dataSource.data.push({
+    this.dataSource.data.push({
+        invoiceId: 0,
         description: '',
         quentity: 0,
         rate: 0,
@@ -26,14 +27,23 @@ export class ItemListComponent implements OnInit {
       this.dataSource.data = this.Items;
     }
   }
-  addRow() {
+  addRow(event) {
+    event.preventDefault();
     const newRow = {
+      invoiceId: 0,
       description: '',
       quentity: 0,
       rate: 0,
       isEdit: true
     };
-    this.dataSource.data = [...this.dataSource.data, newRow];
+    if (this.Items != undefined) {
+      newRow.invoiceId = this.Items[0].invoiceId;
+      this.Items = [...this.Items, newRow];
+      this.dataSource.data = this.Items;
+    }
+    else {
+      this.dataSource.data = [...this.dataSource.data, newRow];      
+    }
   }
   removeRow(element) {
     console.log(element);
@@ -44,6 +54,7 @@ export class ItemListComponent implements OnInit {
 }
 
 export interface Item{
+  invoiceId:number,
   description: string,
   quentity: number,
   rate: number,

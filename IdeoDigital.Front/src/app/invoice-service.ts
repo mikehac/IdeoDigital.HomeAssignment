@@ -24,6 +24,13 @@ export class InvoiceService {
         return response;
       }));
   }
+  put(controller, newInvoice: NewInvoiceResponse) {
+    let url = this.baseUrl + controller;
+    return this.http.put(url, newInvoice)
+      .pipe(map(response => {
+        return response;
+      }));
+  }
 }
 export interface Invoice {
   id: number,

@@ -12,6 +12,7 @@ namespace IdeoDigital.HomeAssignment.Services
         Task<InvoiceDto[]> Get(int PageSize = 20);
         Task<InvoiceDto> GetById(int id);
         Task<bool> Create(InvoiceDto invoice);
+        Task<bool> Update(InvoiceDto invoice);
         Task<bool> Delete(int id);
     }
 }
