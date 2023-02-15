@@ -8,6 +8,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 })
 export class ItemListComponent implements OnInit {
   @Input() Items: Item[];
+  @Input() InvoiceId: number;
   @Output() addingItems = new EventEmitter<Item[]>();
   public displayedColumns = ['description', 'quentity', 'rate'];
   public dataSource = new MatTableDataSource<Item>();
@@ -36,8 +37,8 @@ export class ItemListComponent implements OnInit {
       rate: 0,
       isEdit: true
     };
-    if (this.Items != undefined) {
-      newRow.invoiceId = this.Items[0].invoiceId;
+    if (this.InvoiceId != undefined) {
+      newRow.invoiceId = this.InvoiceId;
       this.Items = [...this.Items, newRow];
       this.dataSource.data = this.Items;
     }

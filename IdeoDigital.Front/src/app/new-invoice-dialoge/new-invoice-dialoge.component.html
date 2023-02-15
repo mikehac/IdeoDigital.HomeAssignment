@@ -51,7 +51,7 @@
         </li>
         <li>
             <label>Items</label>
-            <app-item-list [Items]="items" (addingItems)="onItemAdded($event)"></app-item-list>
+            <app-item-list [Items]="items" [InvoiceId]="invoiceId" (addingItems)="onItemAdded($event)"></app-item-list>
         </li>
     </ul>
   <button type="submit" >{{buttonText}}</button>

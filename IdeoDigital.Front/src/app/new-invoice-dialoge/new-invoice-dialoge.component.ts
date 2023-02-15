@@ -21,6 +21,7 @@ export class NewInvoiceDialogeComponent implements OnInit {
     { value: 2, text: 'Partially Payed' },
     { value: 3, text: 'Not Payed' }
   ];
+  invoiceId: number;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,6 +58,7 @@ export class NewInvoiceDialogeComponent implements OnInit {
     this.form.controls['date'].setValue(formatDate(invoice.date, 'yyyy-MM-dd', 'en'));
     this.form.controls['dueDate'].setValue(formatDate(invoice.dueDate, 'yyyy-MM-dd', 'en'));
     this.items = invoice.items;
+    this.invoiceId = invoice.id;
   }
   
   public onSubmit(newInvoice) {
