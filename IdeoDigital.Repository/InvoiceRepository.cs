@@ -96,9 +96,9 @@ namespace IdeoDigital.Repository
             IQueryable<Invoice> query = _context.Invoices
                 .Include(x => x.Supplier)
                 .Include(x => x.Customer)
-                //.Include(x => x.IdNavigation)
-                .Include(x => x.Status)
-                .Take(PageSize);
+                .Include(x => x.Status);
+            if (PageSize > 0)
+                query = query.Take(PageSize);
             return await query.ToArrayAsync();
         }
 
