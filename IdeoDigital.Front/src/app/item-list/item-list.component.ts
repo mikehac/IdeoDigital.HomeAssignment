@@ -10,7 +10,7 @@ export class ItemListComponent implements OnInit {
   @Input() Items: Item[];
   @Input() InvoiceId: number;
   @Output() addingItems = new EventEmitter<Item[]>();
-  public displayedColumns = ['description', 'quentity', 'rate'];
+  public displayedColumns = ['description', 'quentity', 'rate','isEdit'];
   public dataSource = new MatTableDataSource<Item>();
   constructor() { }
 
@@ -48,6 +48,9 @@ export class ItemListComponent implements OnInit {
   }
   removeRow(element) {
     console.log(element);
+    const index = this.dataSource.data.indexOf(element.id);
+    this.dataSource.data.splice(index, 1);
+    this.dataSource._updateChangeSubscription();
   }
   onFocusOut() {
     this.addingItems.emit(this.dataSource.data);

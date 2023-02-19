@@ -1,7 +1,7 @@
 <article class="table-header">
     <button class="button-add-row" mat-button (click)="addRow($event)">Add Row</button>
   </article>
-<table class="items" mat-table [dataSource]="dataSource">
+<table class="items" mat-table [dataSource]="dataSource" *ngIf="dataSource.data.length > 0">
     <ng-container matColumnDef="description">
       <th mat-header-cell *matHeaderCellDef> Description </th>
       <td mat-cell *matCellDef="let element">
@@ -26,10 +26,11 @@
     <ng-container matColumnDef="isEdit">
         <th mat-header-cell *matHeaderCellDef>Delete</th>
         <td mat-cell *matCellDef="let element">
-            <button name="deleteRow" type="button" class="button-remove" (click)="removeRow(element)">{{element.isEdit}</button>
+            <button name="deleteRow" type="button" class="button-remove" (click)="removeRow(element)">Remove</button>
         </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+<div *ngIf="dataSource.data.length === 0">No records found</div>
