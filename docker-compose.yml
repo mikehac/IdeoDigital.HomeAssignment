@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  ideodigital.homeassignment:
+    image: ${DOCKER_REGISTRY-}ideodigitalhomeassignment
+    build:
+      context: .
+      dockerfile: IdeoDigital.HomeAssignment/Dockerfile
