@@ -1,16 +1,18 @@
-import { Component, Inject , OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject , OnInit, ViewChild } from '@angular/core';
 import { InvoiceService, Invoice } from './invoice-service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NewInvoiceDialogeComponent } from './new-invoice-dialoge/new-invoice-dialoge.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-invoice-list',
   templateUrl: './invoice-list.component.html',
   styleUrls: ['./invoice-list.component.css']
 })
-export class InvoiceListComponent implements OnInit {
+export class InvoiceListComponent implements OnInit,AfterViewInit {
   invoices;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   public displayedColumns = ['id', 'supplierName', 'customerName', 'date', 'dueDate', 'subTotal', 'invoiceStatus'];
   public clickedRows = new Set<Invoice>();
   public dataSource = new MatTableDataSource<Invoice>();
@@ -19,6 +21,10 @@ export class InvoiceListComponent implements OnInit {
   ngOnInit(): void {
     this.getInvoices();
   }
+  ngAfterViewInit() {
+      this.dataSource.paginator = this.paginator;
+  }
+
   private getInvoices() {
     this.invoiceService.get('Invoice')
       .subscribe(invoices => {
