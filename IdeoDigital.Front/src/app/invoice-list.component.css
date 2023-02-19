@@ -108,3 +108,13 @@ table {
   mat-paginator{
     width: 100%;
   }
+
+  .payed{
+    color: green;
+  }
+  .partiallyPayed{
+    color: yellow;
+  }
+  .notPayed{
+    color: red;
+  }

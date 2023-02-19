@@ -2,39 +2,41 @@
 <button mat-raised-button (click)="raisePopUpInvoice()" class="demo-button">
     Create New Invoice
 </button>
- <table mat-table [dataSource]="dataSource">
+ <table mat-table [dataSource]="dataSource" matSort (matSortChange)="invoiceSortChange($event)">
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> Id </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
       <td mat-cell *matCellDef="let element"> {{element.id}} </td>
     </ng-container>
   
     <ng-container matColumnDef="supplierName">
-      <th mat-header-cell *matHeaderCellDef> Supplier Name </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Supplier Name </th>
       <td mat-cell *matCellDef="let element"> {{element.supplierName}} </td>
     </ng-container>
 
     <ng-container matColumnDef="customerName">
-        <th mat-header-cell *matHeaderCellDef> Customer Name </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer Name </th>
         <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
       </ng-container>
   
     <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
       <td mat-cell *matCellDef="let element"> {{element.date | date : "dd/MM/y"}} </td>
     </ng-container>
     <ng-container matColumnDef="dueDate">
-      <th mat-header-cell *matHeaderCellDef> Due Date </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Due Date </th>
       <td mat-cell *matCellDef="let element"> {{element.dueDate | date : "dd/MM/y"}} </td>
     </ng-container>
   
     <ng-container matColumnDef="subTotal">
-      <th mat-header-cell *matHeaderCellDef> Sub Total </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Sub Total </th>
       <td mat-cell *matCellDef="let element"> {{element.subTotal | currency: "ILS"}} </td>
     </ng-container>
   
     <ng-container matColumnDef="invoiceStatus">
-      <th mat-header-cell *matHeaderCellDef> Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.invoiceStatus}} </td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+      <td mat-cell *matCellDef="let element" 
+      [ngClass]="element.statusId == 1? 'payed' :
+      (element.statusId == 2 ? 'partiallyPayed' : 'notPayed')"> {{element.invoiceStatus}} </td>
     </ng-container>
   
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

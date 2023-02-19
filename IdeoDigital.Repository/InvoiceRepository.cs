@@ -99,7 +99,7 @@ namespace IdeoDigital.Repository
                 .Include(x => x.Status);
             if (PageSize > 0)
                 query = query.Take(PageSize);
-            return await query.ToArrayAsync();
+            return await query.OrderByDescending(x => x.Date).ToArrayAsync();
         }
 
         public async Task<Invoice?> GetById(int id)
