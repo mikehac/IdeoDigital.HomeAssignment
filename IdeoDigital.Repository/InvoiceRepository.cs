@@ -190,6 +190,7 @@ namespace IdeoDigital.Repository
                 oldInvoice.Discount = invoice.Discount;
                 decimal subTotal = invoice.Items.Sum(x => x.Rate * x.Quentity);
                 oldInvoice.SubTotal = subTotal;
+                _context.Entry(oldInvoice).State = EntityState.Modified;
                 if (await _context.SaveChangesAsync() > 0)
                     return true;
             }
